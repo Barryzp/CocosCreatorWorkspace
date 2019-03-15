@@ -1,0 +1,2 @@
+# CocosCreatorWorkspace
+example for cocos.

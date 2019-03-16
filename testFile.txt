@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-Modified.
-=======
-portablePc:Modified.
->>>>>>> portablePc
+Master:modified.

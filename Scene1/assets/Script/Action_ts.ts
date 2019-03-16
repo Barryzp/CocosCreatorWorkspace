@@ -17,8 +17,14 @@ export class Action_ts extends cc.Component {
     //这个静态变量就只是归类所有了，可以直接在导出来的类中去引用它
     static staticNumber:number=9;
 
+    private static instance:Action_ts=null;
+    public static get Instance()
+    {
+        return Action_ts.instance;
+    }
 
     onLoad () {
+        Action_ts.instance=this;
 
         let action=cc.rotateTo(10,2200).easing(cc.easeCubicActionOut());
         let reverse=cc.reverseTime(action);

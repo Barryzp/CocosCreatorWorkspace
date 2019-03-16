@@ -37,7 +37,6 @@ export class Action_ts extends cc.Component {
     }
 
     // update (dt) {}
-
     public LogSthInteresting()
     {
         console.log('Alright,I can use git to sync my code,lol!');

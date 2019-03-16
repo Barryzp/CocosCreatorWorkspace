@@ -29,6 +29,7 @@ export class Action_ts extends cc.Component {
         let action=cc.rotateTo(10,2200).easing(cc.easeCubicActionOut());
         let reverse=cc.reverseTime(action);
         this.node.runAction(reverse);
+        console.log('hello world.');
     }
 
     start () {

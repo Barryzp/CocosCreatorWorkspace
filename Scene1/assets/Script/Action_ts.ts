@@ -40,10 +40,7 @@ export class Action_ts extends cc.Component {
     public LogSthInteresting()
     {
         console.log('Alright,I can use git to sync my code,lol!');
-<<<<<<< HEAD
         console.log('No,that\'s enough to me.');
-=======
         console.log('Do you wanna more?');
->>>>>>> c24a285034c376d3409f5d37a06a69a63e09b4ce
     }
 }

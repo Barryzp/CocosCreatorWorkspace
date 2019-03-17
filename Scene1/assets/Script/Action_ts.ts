@@ -43,4 +43,14 @@ export class Action_ts extends cc.Component {
         console.log('No,that\'s enough to me.');
         console.log('Do you wanna more?');
     }
+
+    public OnButtonClick(node)
+    {
+        //let handler=node.clickEvents;
+        let clickEvents=node.target.getComponent(cc.Button).clickEvents;
+
+        let data=parseInt(clickEvents[clickEvents.length-1].customEventData)
+        console.log(data+15);
+    }
+
 }

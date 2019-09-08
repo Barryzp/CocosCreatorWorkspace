@@ -26,8 +26,18 @@ export default class Tile extends cc.Component {
     public type: number = 0;
     public preTile:Tile=null;
 
+    //暂时标记是否是斜边
+    private _isBevel: boolean = false;
+    public get isBevel(): boolean {
+        return this._isBevel;
+    }
+    public set isBevel(value: boolean) {
+        this._isBevel = value;
+    }
+
     public get G(): number {
-        return this.getWeight(MapManager.instance.startTile.pos);
+        let delta:number=this.isBevel?0.4:0;
+        return this.getWeight(MapManager.instance.startTile.pos)+delta;
     }
     public get H(): number {
         return this.getWeight(MapManager.instance.aimTile.pos);

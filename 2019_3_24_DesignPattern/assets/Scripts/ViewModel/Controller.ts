@@ -32,11 +32,21 @@ export default class Controller extends cc.Component {
         this.componentContainer.set(bindingName,component);
     }
 
+    removeComponentFromContainer(bindingName:string){
+        if(!this.componentContainer.has(bindingName))throw new Error("bindingName not exists!: "+bindingName);
+
+        this.componentContainer.delete(bindingName);
+    }
+
     getComponentFromContainer<T>(bindingName:string):T{
         if(!this.componentContainer.has(bindingName)){
             throw new Error("bindingName cant found: "+bindingName);
         }
 
         return this.componentContainer.get(bindingName);
+    }
+
+    onDestroy(){
+        this.componentContainer.clear();
     }
 }

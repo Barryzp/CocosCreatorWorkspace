@@ -65,7 +65,7 @@ export default class Tile extends cc.Component {
     }
 
     /**
-     * 获取到目标点的权值（曼哈顿算法）
+     * 获取到目标点的权值（曼哈顿距离）
      * @param aim 目标点
      */
     private getWeight(aim: cc.Vec2): number {

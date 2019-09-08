@@ -25,5 +25,8 @@ export default class PathGetter extends cc.Component {
         Controller.instance.pushInContainer(this.bindingName,this.component);
     }
 
+    onDestroy(){
+        Controller.instance.removeComponentFromContainer(this.bindingName);
+    }
     // update (dt) {}
 }

@@ -1,0 +1,7 @@
+﻿{ "m_Name": "0_1_drinkM_Data",
+  "m_EditorClassIdentifier": null,
+  "key": 1,
+  "itemName": "饮料机",
+  "scaleGuestNeedView": 0.72,
+  "type": 0
+}

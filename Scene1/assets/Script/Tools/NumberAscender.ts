@@ -12,56 +12,119 @@ import { Tools } from "./Tools";
 
 const { ccclass, property } = cc._decorator;
 
-@ccclass
-export default class NumberAscend extends cc.Component {
-    public static IsStopAllNumberAscendAsync: boolean = false;
-
-    public static AscendNumberAni(label: cc.Label, number: number, time: number, suffix = "", callbacks = null, isUseAni = true) {
-        if (isUseAni) {
-            NumberAscend.AscendNumbers(label, number, time, suffix, callbacks);
-        }
-        else {
-            NumberAscend.SetValue(label,number, suffix);
-        }
+class Tween{
+    public uuid:string;
+    public context:any;
+    constructor(id:string,ct:any)
+    {
+        this.uuid=id;
+        this.context=ct;
     }
 
-    private static async AscendNumbers(label: cc.Label, total, time, suffix = "", callback = null) {
+    public async AscendNumbers(total, time, suffix = "", callback = null) {
         let fixedTime = 20;
 
         let totalTime = time * 1000;
         let loopTimes = totalTime / fixedTime;
         let delta = Math.ceil(total / loopTimes);
 
-        let currentNum = parseInt(label.string);
+        let currentNum = parseInt(this.context.string);
         total += currentNum;
 
         if (total > currentNum) {
-            while (currentNum < total - 20 && !NumberAscend.IsStopAllNumberAscendAsync) {
+            while (currentNum < total - delta && !NumberAscend.IsStopAllNumberAscendAsync) {
 
                 await Tools.Sleep(fixedTime);
                 currentNum += Math.ceil(delta * 0.9) + Math.ceil(delta * 0.1 * Math.random());
-                NumberAscend.SetValue(label, currentNum, suffix);
+                NumberAscend.SetValue(this.context, currentNum, suffix);
             }
             while (currentNum < total && !NumberAscend.IsStopAllNumberAscendAsync) {
                 await Tools.Sleep(fixedTime);
                 currentNum += 1;
-                fixedTime += 5;
-                NumberAscend.SetValue(label, currentNum, suffix);
+                fixedTime += 2;
+                NumberAscend.SetValue(this.context, currentNum, suffix);
             }
         } else {
-            while (currentNum - 20 > total && !NumberAscend.IsStopAllNumberAscendAsync) {
+            while (currentNum - delta > total && !NumberAscend.IsStopAllNumberAscendAsync) {
                 await Tools.Sleep(fixedTime);
                 currentNum += Math.floor(delta * 0.9) + Math.floor(delta * 0.1 * Math.random());
-                NumberAscend.SetValue(label, currentNum, suffix);
+                NumberAscend.SetValue(this.context, currentNum, suffix);
             }
             while (currentNum > total && !NumberAscend.IsStopAllNumberAscendAsync)
             {
-                fixedTime+=20;
                 await Tools.Sleep(fixedTime);
+                fixedTime+=2;
                 currentNum-=1;
+                NumberAscend.SetValue(this.context, currentNum, suffix);
             }
         }
+
+        NumberAscend.SetValue(this.context,total,suffix);
+
+        return callback&&callback();
     }
+}
+
+@ccclass
+export default class NumberAscend extends cc.Component {
+    public static IsStopAllNumberAscendAsync: boolean = false;
+
+    private static tweenSet:Tween[]=[];
+
+    public static AscendNumberAni(label: cc.Label, number: number, time: number, suffix = "", callbacks = null, isUseAni = true) {
+        let tween:Tween=new Tween(label.uuid,label);
+        tween.AscendNumbers(number,time,suffix,callbacks);
+        //NumberAscend.tweenSet.push(tween);
+        //NumberAscend.AscendNumbers(label, number, time, suffix, callbacks);
+    }
+
+    public static DOKill(label:cc.Label)
+    {
+        let uuid=label.uuid;
+        let index=0;
+        let length=NumberAscend.tweenSet.length;
+        while(index<length)
+        {
+            if(NumberAscend.tweenSet[index].uuid==uuid)
+            {
+                break;
+            }
+            index++;
+        }
+        NumberAscend.tweenSet.splice(index,1);
+    }
+
+    // public static IsContinue(uuid:string)
+    // {
+    //     let index=0;
+    //     let length=NumberAscend.tweenSet.length;
+    //     while(index<length)
+    //     {
+    //         if(NumberAscend.tweenSet[index].uuid==uuid)
+    //         {
+    //             return true;
+    //         }
+    //         index++;
+    //     }
+    //     return false;
+    // }
+
+    public static IsContain(uuid:string):boolean
+    {
+        let index=0;
+        let length=NumberAscend.tweenSet.length;
+        while(index<length)
+        {
+            if(NumberAscend.tweenSet[index].uuid==uuid)
+            {
+                return true;
+            }
+            index++;
+        }
+        return false;
+    }
+
+
 
     public static SetValue(label:cc.Label,value:number,suffix='')
     {

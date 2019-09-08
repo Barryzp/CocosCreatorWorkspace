@@ -1,4 +1,5 @@
 import NumberAscend from "../Tools/NumberAscender";
+import { Tools } from "../Tools/Tools";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,14 +25,17 @@ export default class Main extends cc.Component {
     @property
     text: string = 'hello';
 
+    private counter:number=0;
+    
+    public testNumber:number=0;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
-    // update (dt) {}
-
-    public Ascend()
+    public async Ascend()
     {
-        NumberAscend.AscendNumberAni(this.label1,2000,2,"/1000");
+        // NumberAscend.IsContain(this.label1.uuid);
+        this.testNumber=100000;
+        NumberAscend.IsStopAllNumberAscendAsync=true;
+        NumberAscend.AscendNumberAni(this.label1,2000,2,"/1000"+(this.counter++));
         NumberAscend.AscendNumberAni(this.label2,3000,1,"/1000");
     }
 

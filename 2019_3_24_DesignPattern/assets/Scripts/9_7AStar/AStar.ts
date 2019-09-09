@@ -120,9 +120,10 @@ export default class AStar extends cc.Component {
             this.openedList.push(tile);
         }else{
             //不应置为正常，只需要比较周围的点与初始点之间的距离
-            if(current.G<tile.G){
-                tile.preTile=current;
-            }
+            // if(current.G<tile.G){
+            //     current.isBevel=false;
+            //     tile.preTile=current;
+            // }
         }
     }
 

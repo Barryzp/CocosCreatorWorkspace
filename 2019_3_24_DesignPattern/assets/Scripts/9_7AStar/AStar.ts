@@ -17,7 +17,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class AStar extends cc.Component {
 
-    public isDetectAll:boolean = false;
+    public isDetectAll:boolean = true;
 
     public counter: number = 0;
     public closedList: Tile[] = [];
@@ -35,7 +35,7 @@ export default class AStar extends cc.Component {
                 this.pushAroundInOpenList(tile);
             } else {
                 tile = this.getShortTileFromOl();
-                await Tools.sleep(0.5);
+                //await Tools.sleep(0.5);
 
                 this.pushInClosedList(tile);
                 this.removeFromOl(tile);
@@ -118,9 +118,11 @@ export default class AStar extends cc.Component {
         if (!this.isInOpenList(tile)) {
             tile.preTile = current;
             this.openedList.push(tile);
-        }else if(current.isBevel){
-            //置为正常
-            current.isBevel=false;
+        }else{
+            //不应置为正常，只需要比较周围的点与初始点之间的距离
+            if(current.G<tile.G){
+                tile.preTile=current;
+            }
         }
     }
 

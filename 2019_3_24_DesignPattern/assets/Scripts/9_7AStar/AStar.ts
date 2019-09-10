@@ -17,7 +17,12 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class AStar extends cc.Component {
 
+<<<<<<< HEAD
     public isDetectAll:boolean = true;
+=======
+    //TODO：还没有检测检查周围的情况
+    public isDetectAll:boolean = false;
+>>>>>>> 9.10.Adapter.
 
     public counter: number = 0;
     public closedList: Tile[] = [];

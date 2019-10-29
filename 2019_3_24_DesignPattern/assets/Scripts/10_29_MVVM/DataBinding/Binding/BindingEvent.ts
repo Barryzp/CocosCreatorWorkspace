@@ -1,26 +1,26 @@
 
-export class Action{
-    obj:object;
-    name:string
-}
-
 export default class BindingEvent{
-    private eventList:Action[];
+    private eventList:Function[];
 
     public bindEvent(){
-        this.eventList=new Array<Action>();
+        this.eventList=new Array();
     }
 
-    add(action:Action){
+    add(action:Function){
         if(!action)return;
         this.eventList.push(action);
     }
 
-    remove(action:Action){
+    remove(action:Function){
         if(!action)return;
 
         //记得要扩展库
         this.eventList.remove(action);
     }
 
+    call(thisArg:any,propertyName:string){
+        this.eventList.forEach(item=>{
+            item.call(thisArg,propertyName);
+        })
+    }
 }

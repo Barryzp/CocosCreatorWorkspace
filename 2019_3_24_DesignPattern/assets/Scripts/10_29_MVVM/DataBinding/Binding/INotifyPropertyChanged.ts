@@ -1,0 +1,3 @@
+interface INotifyPropertyChanged{
+    propertyChanged:Function
+}

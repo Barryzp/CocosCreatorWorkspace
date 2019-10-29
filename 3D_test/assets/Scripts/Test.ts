@@ -9,7 +9,15 @@ export default class Test extends cc.Component {
     // onLoad () {}
 
     start () {
-        this.fun(10);
+        // this.fun(10);
+
+        let wordlMatrix=cc.mat4();
+        this.node.getWorldMatrix(wordlMatrix)
+        console.log("worldMatrix: "+wordlMatrix)
+
+        let localMatrix=cc.mat4();
+        this.node.getLocalMatrix(localMatrix);
+        console.log("localMatrix: "+localMatrix)
     }
 
     fun(param){

@@ -1,26 +1,29 @@
 
 export default class BindingEvent{
-    private eventList:Function[];
+    private eventList:Map<string,Function>;
 
     public bindEvent(){
-        this.eventList=new Array();
+        this.eventList=new Map<string,Function>();
     }
 
-    add(action:Function){
+    add(eventName:string,action:Function){
         if(!action)return;
-        this.eventList.push(action);
+        this.eventList.set(eventName,action);
     }
 
-    remove(action:Function){
-        if(!action)return;
+    remove(eventName:string){
+        if(!eventName)return;
 
-        //记得要扩展库
-        this.eventList.remove(action);
+        this.eventList.delete(eventName);
     }
 
+    //HACK:通知所有事件变动存在一定问题
     call(thisArg:any,propertyName:string){
-        this.eventList.forEach(item=>{
-            item.call(thisArg,propertyName);
-        })
+        if(!propertyName){
+            this.eventList.forEach(element => element());
+            return;
+        }
+
+        this.eventList.get(propertyName).call(thisArg);
     }
 }

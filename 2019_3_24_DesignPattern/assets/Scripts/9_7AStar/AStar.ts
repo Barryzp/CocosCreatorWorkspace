@@ -18,7 +18,7 @@ const { ccclass, property } = cc._decorator;
 export default class AStar extends cc.Component {
 
     //TODO：还没有检测检查周围的情况
-    public isDetectAll:boolean = false;
+    public isDetectAll:boolean = true;
 
     public counter: number = 0;
     public closedList: Tile[] = [];
@@ -36,7 +36,8 @@ export default class AStar extends cc.Component {
                 this.pushAroundInOpenList(tile);
             } else {
                 tile = this.getShortTileFromOl();
-                //await Tools.sleep(0.5);
+                tile.refreshLabel();
+                await Tools.sleep(0.1);
 
                 this.pushInClosedList(tile);
                 this.removeFromOl(tile);
@@ -44,13 +45,27 @@ export default class AStar extends cc.Component {
             }
         }
 
-        let temp:Tile=MapManager.instance.aimTile;
-        while(temp){
-            temp.node.color=cc.Color.MAGENTA;
-            temp=temp.preTile;
+        let tempTile:Tile=MapManager.instance.aimTile;
+        let aimTile:Tile=MapManager.instance.aimTile;
+        let startTile:Tile=MapManager.instance.aimTile;
+        let tiles = []
+        while(tempTile!=null){
+            tiles.push(tempTile);
+            tempTile = tempTile.preTile;
+        }
+
+        for (let i = tiles.length - 1; i >= 0; i--) {
+            await Tools.sleep(0.1);
+            const tile = tiles[i];
+            if (tile == startTile || tile == aimTile) {
+                continue;
+            }
+
+            tile.node.color = cc.Color.MAGENTA;
         }
     }
 
+    // 八个方向上的格子分别放入开放队列
     public pushAroundInOpenList(tile: Tile) {
         if (tile.pos.y + 1 < MapManager.instance.size) this.pushInOpenList(MapManager.instance.tileContainer[tile.pos.x][tile.pos.y + 1], tile);//上
         if (tile.pos.x - 1 >= 0) this.pushInOpenList(MapManager.instance.tileContainer[tile.pos.x - 1][tile.pos.y], tile);//左
@@ -114,9 +129,9 @@ export default class AStar extends cc.Component {
         if (tile.type == TileType.obstacle) return;
         if (this.isInClosedList(tile)) return;
 
-        tile.isBevel = isBevel;
         //设置前驱
         if (!this.isInOpenList(tile)) {
+            tile.isBevel = isBevel;
             tile.preTile = current;
             this.openedList.push(tile);
         }else{
@@ -132,6 +147,10 @@ export default class AStar extends cc.Component {
         console.log("pos: ", tile.pos.x, tile.pos.y)
         tile.counter.string = "" + this.counter++;
         this.closedList.push(tile);
+
+        if (tile == MapManager.instance.startTile || tile == MapManager.instance.aimTile) {
+            return;
+        }
         tile.node.color = cc.Color.ORANGE;
     }
 

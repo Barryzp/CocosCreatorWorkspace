@@ -35,12 +35,21 @@ export default class Tile extends cc.Component {
         this._isBevel = value;
     }
 
+    /**采用整数计算，速度快 */
     public get G(): number {
-        let delta:number=this.isBevel?0.4:0;
-        return this.getWeight(MapManager.instance.startTile.pos)+delta;
+        let delta:number = 0;
+        let parentG = 0;
+        if (this.preTile != null) {
+            parentG = this.preTile.G;
+            delta = this.isBevel ? 14 : 10;
+        }
+
+        let val = parentG + delta;
+        return val;
     }
     public get H(): number {
-        return this.getWeight(MapManager.instance.aimTile.pos);
+        let val = this.getWeight(MapManager.instance.aimTile.pos);
+        return val
     }
     public get F(): number {
         return this.G + this.H;
@@ -48,6 +57,16 @@ export default class Tile extends cc.Component {
 
     @property(cc.Label)
     counter:cc.Label=null;
+
+    @property(cc.Label)
+    posLabel:cc.Label=null;
+
+    @property(cc.Label)
+    gLabel:cc.Label=null;
+
+    @property(cc.Label)
+    hLabel:cc.Label=null;
+
 
     public get isObstacle() {
         return this.type == TileType.obstacle;
@@ -59,7 +78,7 @@ export default class Tile extends cc.Component {
             case TileType.normal:
                 break;
             case TileType.obstacle:
-                this.node.color = cc.Color.BLACK;
+                this.node.color = cc.Color.GRAY;
                 break;
             case TileType.start:
                 this.node.color = cc.Color.RED;
@@ -72,6 +91,16 @@ export default class Tile extends cc.Component {
         }
 
         this.pos = pos;
+        this.posLabel.string = `(${pos.x},${pos.y})`;
+    }
+
+    refreshLabel(){
+        this.hLabel.string = "H:"+this.H.toString();
+        this.gLabel.string = "G:"+this.G.toString();
+    }
+
+    setPreTile(tile:Tile){
+        this.preTile = tile;
     }
 
     /**
@@ -81,7 +110,7 @@ export default class Tile extends cc.Component {
     private getWeight(aim: cc.Vec2): number {
         let weight = -1;
 
-        weight = Math.abs(aim.x - this.pos.x) + Math.abs(aim.y - this.pos.y);
+        weight = Math.abs(aim.x - this.pos.x) + Math.abs(aim.y - this.pos.y) * 10;
         if (weight < 0) throw new Error("weight has not initialized!");
 
         return weight;

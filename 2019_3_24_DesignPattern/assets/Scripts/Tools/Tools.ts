@@ -5,9 +5,7 @@ export class Tools{
      */
     public static async sleep(seconds:number){
         return new Promise((resolve,reject)=>{
-            setTimeout(()=>{
-                resolve();
-            },seconds*1000);
+            setTimeout(resolve,seconds*1000);
         });
     }
 }

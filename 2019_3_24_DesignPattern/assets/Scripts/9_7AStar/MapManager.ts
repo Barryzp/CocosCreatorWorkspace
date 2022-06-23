@@ -22,8 +22,9 @@ export default class MapManager extends cc.Component {
     public tilePb: cc.Prefab = null;
 
     public size: number = 0;
-    public map =
-        [
+    /**
+     * testMap:
+     * [
             [0, 0, 0, 1, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 2],
             [0, 0, 0, 1, 0, 0, 0, 0],
@@ -32,6 +33,23 @@ export default class MapManager extends cc.Component {
             [0, 1, 0, 1, 0, 0, 0, 0],
             [0, 0, 1, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+     * 
+     * 
+     */
+    public map =
+        [
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+            [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
         ];
     public tileContainer: Tile[][];
 
@@ -60,7 +78,7 @@ export default class MapManager extends cc.Component {
     public createMap(edge: number, startPos: cc.Vec2) {
         let tempPos: cc.Vec2 = startPos;
         this.tileContainer = new Array(this.size);
-        for(let i = 0; i < this.size; i++){
+        for (let i = 0; i < this.size; i++) {
             this.tileContainer[i] = new Array(this.size);
         }
 
@@ -86,5 +104,16 @@ export default class MapManager extends cc.Component {
         tileControl.initTile(this.map[mapPos.x][mapPos.y], cc.v2(mapPos.y, this.size - mapPos.x - 1));
         this.tileContainer[mapPos.y][this.size - mapPos.x - 1] = tileControl;
     }
-    // update (dt) {}
+
+    public isBeyondBorder(tile: Tile) {
+        return !tile;
+    }
+
+    public getTile(x: number, y: number) {
+        if (x < 0 || y < 0 || x >= this.size || y >= this.size) {
+            return null
+        }
+
+        return this.tileContainer[x][y];
+    }
 }

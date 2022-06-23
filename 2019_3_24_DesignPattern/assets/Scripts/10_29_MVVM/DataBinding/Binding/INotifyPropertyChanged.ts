@@ -1,3 +1,4 @@
 interface INotifyPropertyChanged{
-    propertyChanged:Function
+    addPropertyChangedEvent:Function;
+    removePropertyChangedEvent:Function
 }

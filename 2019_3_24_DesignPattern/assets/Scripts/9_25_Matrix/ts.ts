@@ -7,20 +7,23 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class ts extends cc.Component {
+export default class ts extends cc.Component{
 
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
+    aProperty:number=0;
 
     start () {
-        let a=[0,2,3,5];
-        a.remove(7);
-        console.log(a);
+        let a=1;
+        let b=2;
+        console.log(a&b)
+
+        let buttonComp=this.getComponent(cc.Button);
+    }
+
+    changeValue(thisArg,propertyName:string,value){
+        thisArg[propertyName]=value;
     }
 
     // update (dt) {}
